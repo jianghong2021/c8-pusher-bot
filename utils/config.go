@@ -9,6 +9,7 @@ import (
 type AppConfigData struct {
 	TgBotToken string `json:"TgBotToken"`
 	AuthKey    string
+	Admins     string
 }
 
 var (

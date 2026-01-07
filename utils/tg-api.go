@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 	"time"
+
+	"slices"
 
 	tele "gopkg.in/telebot.v4"
 )
@@ -32,9 +35,17 @@ func initBot() {
 		return
 	}
 
+	commands := []tele.Command{
+		{Text: "start", Description: "启动机器人"},
+	}
+
+	bot.SetCommands(commands)
+
 	bot.Handle("/start", func(c tele.Context) error {
 		id := c.Message().Chat.ID
-		if id < 0 {
+		username := c.Sender().Username
+		if id < 0 && isBotAdmin(username) {
+			log.Println("current admin: ", username)
 			SetCache(ChatIdCacheKey, fmt.Sprintf("%d", id))
 			return c.Reply(fmt.Sprintf("初始化成功,当前聊天ID:%d", id))
 		} else {
@@ -45,6 +56,14 @@ func initBot() {
 	log.Println("bot init done")
 
 	go bot.Start()
+}
+
+func isBotAdmin(username string) bool {
+	if username == "" {
+		return false
+	}
+	admins := strings.Split(AppConfig.Admins, ",")
+	return slices.Contains(admins, username)
 }
 
 func SendMessage(text string) error {
