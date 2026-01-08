@@ -13,7 +13,7 @@ func InitRouter(app *gin.Engine) {
 
 	pusher := app.Group("/open/data/push", middleware.Auth)
 	{
-		pusher.POST("/ayCashOut", controller.PushayCashOut)
+		pusher.POST("/payCashOut", controller.PushayCashOut)
 		pusher.POST("/payRecharge", controller.PayRecharge)
 		pusher.POST("/billiardEntertained", controller.BilliardEntertained)
 		pusher.POST("/dailyFunds", controller.DailyFunds)

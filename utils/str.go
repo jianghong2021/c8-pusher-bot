@@ -30,7 +30,7 @@ func EscapeMarkdownV2(text string) string {
 }
 
 // 构建 Telegram MarkdownV2 格式的键值对列表
-func BuildMarkdownV2List(headers []string, rows [][]string) string {
+func BuildMarkdownV2List(headers []string, rows [][]string, leftPadding string) string {
 	if len(headers) == 0 || len(rows) == 0 {
 		return ""
 	}
@@ -42,7 +42,7 @@ func BuildMarkdownV2List(headers []string, rows [][]string) string {
 			if i < len(row) {
 				escapedHeader := EscapeMarkdownV2(header)
 				escapedValue := EscapeMarkdownV2(row[i])
-				b.WriteString("*" + escapedHeader + ":* " + escapedValue + "\n")
+				b.WriteString(leftPadding + escapedHeader + ": " + escapedValue + "\n")
 			}
 		}
 		b.WriteString("\n")
